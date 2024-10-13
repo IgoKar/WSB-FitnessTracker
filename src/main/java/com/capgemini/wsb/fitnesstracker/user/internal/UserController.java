@@ -58,6 +58,16 @@ class UserController {
                 .orElseThrow(() -> new UserNotFoundException(id));
     }
 
+    @GetMapping("/older/{time}")
+    public List<UserDto> getUserByDate(@PathVariable String time) {
+        LocalDate date = LocalDate.parse(time);
+        return userService.findAllUsers()
+                .stream()
+                .filter(user -> user.getBirthdate().isBefore(date))
+                .map(userMapper::toDto)
+                .toList();
+    }
+
     @PostMapping
     public User addUser(@RequestBody UserDto userDto) throws InterruptedException {
 
