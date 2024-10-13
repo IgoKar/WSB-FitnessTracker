@@ -2,6 +2,7 @@ package com.capgemini.wsb.fitnesstracker.user.internal;
 
 import com.capgemini.wsb.fitnesstracker.user.api.SimpleUserDto;
 import com.capgemini.wsb.fitnesstracker.user.api.User;
+import com.capgemini.wsb.fitnesstracker.user.api.UserDto;
 import com.capgemini.wsb.fitnesstracker.user.api.UserEmailDto;
 import org.springframework.stereotype.Component;
 

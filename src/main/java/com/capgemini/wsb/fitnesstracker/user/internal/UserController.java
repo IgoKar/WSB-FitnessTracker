@@ -4,9 +4,9 @@ import com.capgemini.wsb.fitnesstracker.user.api.SimpleUserDto;
 import com.capgemini.wsb.fitnesstracker.user.api.User;
 import com.capgemini.wsb.fitnesstracker.user.api.UserEmailDto;
 import com.capgemini.wsb.fitnesstracker.user.api.UserNotFoundException;
+import com.capgemini.wsb.fitnesstracker.user.api.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -68,6 +68,12 @@ class UserController {
                 .filter(user -> user.getBirthdate().isBefore(date))
                 .map(userMapper::toDto)
                 .toList();
+    }
+
+    @PutMapping("/{id}")
+    public UserDto updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
+        User updatedUser = userService.updateUser(id, userDto);
+        return userMapper.toDto(updatedUser);
     }
 
     @DeleteMapping("/{id}")
