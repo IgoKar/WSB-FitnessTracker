@@ -2,10 +2,12 @@ package com.capgemini.wsb.fitnesstracker.user.internal;
 
 import com.capgemini.wsb.fitnesstracker.user.api.SimpleUserDto;
 import com.capgemini.wsb.fitnesstracker.user.api.User;
+import com.capgemini.wsb.fitnesstracker.user.api.UserEmailDto;
 import com.capgemini.wsb.fitnesstracker.user.api.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -16,6 +18,7 @@ class UserController {
     private final UserServiceImpl userService;
 
     private final UserMapper userMapper;
+    private final UserRepository userRepository;
 
     @GetMapping
     public List<UserDto> getAllUsers() {
@@ -33,9 +36,23 @@ class UserController {
                 .toList();
     }
 
+    @GetMapping("/email")
+    public List<UserEmailDto> getUsersByEmail(@RequestParam(required = false) String email) {
+        if (email != null && !email.isEmpty()) {
+            return userService.getUserByEmail(email)
+                    .stream()
+                    .map(userMapper::toUserEmailDto)
+                    .toList();
+        }
+        return userService.findAllUsers()
+                .stream()
+                .map(userMapper::toUserEmailDto)
+                .toList();
+
+    }
+
     @GetMapping("/{id}")
     public UserDto getUser(@PathVariable Long id) {
-        System.out.println("Received id: " + id);
         return userService.getUser(id)
                 .map(userMapper::toDto)
                 .orElseThrow(() -> new UserNotFoundException(id));
