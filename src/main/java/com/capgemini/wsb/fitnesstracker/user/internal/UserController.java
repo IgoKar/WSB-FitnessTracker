@@ -22,14 +22,16 @@ class UserController {
     private final UserMapper userMapper;
     private final UserRepository userRepository;
 
+    // --- READ: Get all users ---
     @GetMapping
     public List<UserDto> getAllUsers() {
         return userService.findAllUsers()
-                          .stream()
-                          .map(userMapper::toDto)
-                          .toList();
+                .stream()
+                .map(userMapper::toDto)
+                .toList();
     }
 
+    // --- READ: Get simplified user data (only some fields) ---
     @GetMapping("/simple")
     public List<SimpleUserDto> getSimpleUsers() {
         return userService.findAllUsers()
@@ -38,6 +40,7 @@ class UserController {
                 .toList();
     }
 
+    // --- READ: Get users by email, if email is provided ---
     @GetMapping("/email")
     public List<UserEmailDto> getUsersByEmail(@RequestParam(required = false) String email) {
         if (email != null && !email.isEmpty()) {
@@ -50,16 +53,9 @@ class UserController {
                 .stream()
                 .map(userMapper::toUserEmailDto)
                 .toList();
-
     }
 
-    @GetMapping("/{id}")
-    public UserDto getUser(@PathVariable Long id) {
-        return userService.getUser(id)
-                .map(userMapper::toDto)
-                .orElseThrow(() -> new UserNotFoundException(id));
-    }
-
+    // --- READ: Get users older than the specified date ---
     @GetMapping("/older/{time}")
     public List<UserDto> getUserByDate(@PathVariable String time) {
         LocalDate date = LocalDate.parse(time);
@@ -70,25 +66,35 @@ class UserController {
                 .toList();
     }
 
+    // --- READ: Get a specific user by ID ---
+    @GetMapping("/{id}")
+    public UserDto getUser(@PathVariable Long id) {
+        // Retrieves a user by their ID, or throws a UserNotFoundException if the user doesn't exist
+        return userService.getUser(id)
+                .map(userMapper::toDto)
+                .orElseThrow(() -> new UserNotFoundException(id));
+    }
+
+    // --- UPDATE: Update an existing user ---
     @PutMapping("/{id}")
     public UserDto updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
         User updatedUser = userService.updateUser(id, userDto);
         return userMapper.toDto(updatedUser);
     }
 
+    // --- DELETE: Delete a user by their ID ---
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable Long id) {
         userRepository.deleteById(id);
     }
 
+    // --- CREATE: Add a new user ---
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto addUser(@RequestBody UserDto userDto) throws InterruptedException {
-
         User user = userMapper.toEntity(userDto);
         User createdUser = userService.createUser(user);
         return userMapper.toDto(createdUser);
     }
-
 }
