@@ -23,20 +23,11 @@ class UserServiceImpl implements UserService, UserProvider {
             throw new IllegalArgumentException("User has already DB ID, update is not permitted!");
         }
 
-        if (getUserByEmail(user.getEmail()).isPresent()) {
-            throw new DuplicateEmailException(user.getEmail());
-        }
-
         return userRepository.save(user);
     }
 
-
     @Override
     public User updateUser(final Long userId, final UserDto userDto) {
-        if (getUserByEmail(userDto.email()).isPresent()) {
-            throw new DuplicateEmailException(userDto.email());
-        }
-
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException((userId)));
         log.info("Updating User {}", user);
 

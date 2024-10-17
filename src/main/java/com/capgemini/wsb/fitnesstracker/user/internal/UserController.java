@@ -1,9 +1,6 @@
 package com.capgemini.wsb.fitnesstracker.user.internal;
 
-import com.capgemini.wsb.fitnesstracker.user.api.SimpleUserDto;
-import com.capgemini.wsb.fitnesstracker.user.api.User;
-import com.capgemini.wsb.fitnesstracker.user.api.UserEmailDto;
-import com.capgemini.wsb.fitnesstracker.user.api.UserNotFoundException;
+import com.capgemini.wsb.fitnesstracker.user.api.*;
 import com.capgemini.wsb.fitnesstracker.user.api.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -78,6 +75,9 @@ class UserController {
     // --- UPDATE: Update an existing user ---
     @PutMapping("/{id}")
     public UserDto updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
+        if (userService.getUserByEmail(userDto.email()).isPresent()) {
+            throw new DuplicateEmailException(userDto.email());
+        }
         User updatedUser = userService.updateUser(id, userDto);
         return userMapper.toDto(updatedUser);
     }
@@ -93,6 +93,9 @@ class UserController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto addUser(@RequestBody UserDto userDto) throws InterruptedException {
+        if (userService.getUserByEmail(userDto.email()).isPresent()) {
+            throw new DuplicateEmailException(userDto.email());
+        }
         User user = userMapper.toEntity(userDto);
         User createdUser = userService.createUser(user);
         return userMapper.toDto(createdUser);
