@@ -1,9 +1,6 @@
 package com.capgemini.wsb.fitnesstracker.user.internal;
 
-import com.capgemini.wsb.fitnesstracker.user.api.User;
-import com.capgemini.wsb.fitnesstracker.user.api.UserNotFoundException;
-import com.capgemini.wsb.fitnesstracker.user.api.UserProvider;
-import com.capgemini.wsb.fitnesstracker.user.api.UserService;
+import com.capgemini.wsb.fitnesstracker.user.api.*;
 import com.capgemini.wsb.fitnesstracker.user.api.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,12 +22,21 @@ class UserServiceImpl implements UserService, UserProvider {
         if (user.getId() != null) {
             throw new IllegalArgumentException("User has already DB ID, update is not permitted!");
         }
+
+        if (getUserByEmail(user.getEmail()).isPresent()) {
+            throw new DuplicateEmailException(user.getEmail());
+        }
+
         return userRepository.save(user);
     }
 
 
     @Override
     public User updateUser(final Long userId, final UserDto userDto) {
+        if (getUserByEmail(userDto.email()).isPresent()) {
+            throw new DuplicateEmailException(userDto.email());
+        }
+
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException((userId)));
         log.info("Updating User {}", user);
 
