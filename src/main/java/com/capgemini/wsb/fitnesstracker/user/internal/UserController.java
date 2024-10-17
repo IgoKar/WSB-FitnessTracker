@@ -51,10 +51,10 @@ class UserController {
     }
 
     /**
-     * Retrieves users by email. If no email is provided, returns all users.
+     * Retrieves user by email. If no email is provided, returns all users.
      *
      * @param email the email of the user to search for (optional).
-     * @return a list of UserEmailDto representing users matching the provided email or all users if no email is specified.
+     * @return a list of UserEmailDto representing user matching the provided email or all users if no email is specified.
      */
     @GetMapping("/email")
     public List<UserEmailDto> getUsersByEmail(@RequestParam(required = false) String email) {
