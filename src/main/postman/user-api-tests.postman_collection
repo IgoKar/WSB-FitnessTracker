@@ -1,0 +1,168 @@
+{
+	"info": {
+		"_postman_id": "4174aef8-5c9d-48ac-ab81-bae95c00bb1f",
+		"name": "Fitness Tracker API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39067960"
+	},
+	"item": [
+		{
+			"name": "/v1/users",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"Igor\",\r\n    \"lastName\": \"Karlik\",\r\n    \"email\": \"igor.karlik@domain.com\",\r\n    \"birthdate\": \"1990-01-01\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/v1/users/10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"v1",
+						"users",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/v1/users",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/v1/users/10",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v1",
+						"users",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/v1/users",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"Igor\",\r\n    \"lastName\": \"Karlik\",\r\n    \"email\": \"igor.karlik@domain.com\",\r\n    \"birthdate\": \"1990-01-01\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/v1/users",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v1",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/v1/users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/v1/users",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v1",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/v1/users/simple",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/v1/users/simple",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v1",
+						"users",
+						"simple"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/v1/users/older",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/v1/users/older/1960-01-01",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v1",
+						"users",
+						"older",
+						"1960-01-01"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/v1/users.email?email=",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/v1/users/email?email=igor.karlik@domain.com",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v1",
+						"users",
+						"email"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "igor.karlik@domain.com"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
