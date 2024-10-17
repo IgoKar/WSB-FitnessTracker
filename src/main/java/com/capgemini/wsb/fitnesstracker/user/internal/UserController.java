@@ -4,6 +4,7 @@ import com.capgemini.wsb.fitnesstracker.user.api.*;
 import com.capgemini.wsb.fitnesstracker.user.api.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -99,5 +100,10 @@ class UserController {
         User user = userMapper.toEntity(userDto);
         User createdUser = userService.createUser(user);
         return userMapper.toDto(createdUser);
+    }
+
+    @ExceptionHandler(DuplicateEmailException.class)
+    public ResponseEntity<String> handleDuplicateEmailException(DuplicateEmailException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
     }
 }
