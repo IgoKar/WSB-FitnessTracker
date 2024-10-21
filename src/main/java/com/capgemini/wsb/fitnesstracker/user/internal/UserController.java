@@ -149,6 +149,17 @@ class UserController {
     }
 
     /**
+     * Handles UserNotFoundException by returning a 409 Conflict response.
+     *
+     * @param e the UserNotFoundException to handle.
+     * @return a ResponseEntity with status 404 and the exception message.
+     */
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<String> handleUserNotFoundException(UserNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    }
+
+    /**
      * Handles DuplicateEmailException by returning a 409 Conflict response.
      *
      * @param e the DuplicateEmailException to handle.
