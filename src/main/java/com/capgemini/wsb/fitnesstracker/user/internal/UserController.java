@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * REST controller for managing users.
@@ -59,10 +60,10 @@ class UserController {
     @GetMapping("/email")
     public List<UserEmailDto> getUsersByEmail(@RequestParam(required = false) String email) {
         if (email != null && !email.isEmpty()) {
-            return userService.getUserByEmail(email)
-                    .stream()
-                    .map(userMapper::toUserEmailDto)
-                    .toList();
+            Optional<User> optionalUser = userService.getUserByEmail(email);
+            return optionalUser
+                    .map(user -> List.of(userMapper.toUserEmailDto(user)))
+                    .orElseGet(List::of);
         }
         return userService.findAllUsers()
                 .stream()
