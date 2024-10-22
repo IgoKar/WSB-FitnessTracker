@@ -84,6 +84,19 @@ class UserApiIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    void shouldReturnDetailsAboutSimpleUser_whenGettingUserById() throws Exception {
+        User user1 = existingUser(generateUser());
+
+        mockMvc.perform(get("/v1/users/simple/{id}", user1.getId()).contentType(MediaType.APPLICATION_JSON))
+                .andDo(log())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isNotEmpty())
+                .andExpect(jsonPath("$.firstName").value(user1.getFirstName()))
+                .andExpect(jsonPath("$.lastName").value(user1.getLastName()));
+
+    }
+
+    @Test
     void shouldReturnDetailsAboutUser_whenGettingUserByEmail() throws Exception {
         User user1 = existingUser(generateUser());
 

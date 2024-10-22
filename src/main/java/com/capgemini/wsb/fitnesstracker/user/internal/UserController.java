@@ -102,6 +102,20 @@ class UserController {
     }
 
     /**
+     * Retrieves a specific user by their id in simple format.
+     *
+     * @param id the id of the user to retrieve.
+     * @return the UserDto representing the user with the specified id.
+     * @throws UserNotFoundException if no user is found with the specified id.
+     */
+    @GetMapping("/simple/{id}")
+    public SimpleUserDto getSimpleUser(@PathVariable Long id) {
+        return userService.getUser(id)
+                .map(userMapper::toSimpleDto)
+                .orElseThrow(() -> new UserNotFoundException(id));
+    }
+
+    /**
      * Updates an existing user identified by their id.
      *
      * @param id the id of the user to update.
