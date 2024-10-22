@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    url: "jdbc:h2:mem:testdb"   # Override default datasource with in-memory H2 DB for tests
+    driver-class-name: "org.h2.Driver"
+    username: "sa"
+    password: ""
+  h2:
+    console:
+      enabled: true
+  profiles:
+    active: test
+
+server:
+  port: 0
+
+logging:
+  level:
+    org.springframework.security: OFF
