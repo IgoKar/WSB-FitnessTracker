@@ -1,9 +1,8 @@
 package com.capgemini.wsb.fitnesstracker.training.api;
 
 import com.capgemini.wsb.fitnesstracker.training.internal.ActivityType;
-import com.capgemini.wsb.fitnesstracker.user.api.User;
 
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,29 +41,5 @@ public interface TrainingProvider {
      * @param afterTime Date after which finished trainings are to be retrieved.
      * @return List of finished trainings after the specified date.
      */
-    List<Training> findAllFinishedTrainingsAfterTime(SimpleDateFormat afterTime);
-
-    /**
-     * Creates a new training.
-     *
-     * @param training The training object to create.
-     * @return The created training.
-     */
-    Training createTraining(Training training);
-
-    /**
-     * Updates an existing training. Allows updating selected fields of the training.
-     *
-     * @param trainingId     ID of the training to update.
-     * @param updatedTraining The training object containing updated data.
-     * @return An {@link Optional} containing the updated training or {@link Optional#empty()} if not found.
-     */
-    Optional<Training> updateTraining(Long trainingId, Training updatedTraining);
-
-    /**
-     * Deletes a training based on its ID.
-     *
-     * @param trainingId ID of the training to delete.
-     */
-    void deleteTraining(Long trainingId);
+    List<Training> findAllFinishedTrainingsAfterTime(LocalDateTime afterTime);
 }
