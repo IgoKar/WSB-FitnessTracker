@@ -3,15 +3,13 @@ package com.capgemini.wsb.fitnesstracker.training.api;
 import com.capgemini.wsb.fitnesstracker.training.internal.ActivityType;
 import com.capgemini.wsb.fitnesstracker.user.api.User;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 @Entity
 @Table(name = "trainings")
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
 public class Training {
@@ -25,10 +23,10 @@ public class Training {
     private User user;
 
     @Column(name = "start_time", nullable = false)
-    private Date startTime;
+    private LocalDateTime startTime;
 
     @Column(name = "end_time", nullable = false)
-    private Date endTime;
+    private LocalDateTime endTime;
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "activity_type", nullable = false)
@@ -42,8 +40,8 @@ public class Training {
 
     public Training(
             final User user,
-            final Date startTime,
-            final Date endTime,
+            final LocalDateTime startTime,
+            final LocalDateTime endTime,
             final ActivityType activityType,
             final double distance,
             final double averageSpeed) {
