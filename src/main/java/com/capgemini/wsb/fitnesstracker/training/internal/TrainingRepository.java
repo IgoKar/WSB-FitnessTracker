@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 
-interface TrainingRepository extends JpaRepository<Training, Long> {
+public interface TrainingRepository extends JpaRepository<Training, Long> {
     List<Training> findByActivityType(ActivityType activityType);
     List<Training> findByEndTimeBefore(LocalDateTime date);
 }
