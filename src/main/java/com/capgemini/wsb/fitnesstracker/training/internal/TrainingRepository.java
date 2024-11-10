@@ -8,5 +8,5 @@ import java.util.List;
 
 interface TrainingRepository extends JpaRepository<Training, Long> {
     List<Training> findByActivityType(ActivityType activityType);
-    List<Training> findByEndTimeAfter(LocalDateTime date);
+    List<Training> findByEndTimeBefore(LocalDateTime date);
 }
