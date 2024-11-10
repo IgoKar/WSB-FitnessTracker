@@ -20,7 +20,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 class UserController {
 
-    private final UserServiceImpl userService;
+    private final UserService userService;
+    private final UserProvider userProvider;
 
     private final UserMapper userMapper;
     private final UserRepository userRepository;
@@ -32,7 +33,7 @@ class UserController {
      */
     @GetMapping
     public List<UserDto> getAllUsers() {
-        return userService.findAllUsers()
+        return userProvider.findAllUsers()
                 .stream()
                 .map(userMapper::toDto)
                 .toList();
@@ -45,7 +46,7 @@ class UserController {
      */
     @GetMapping("/simple")
     public List<SimpleUserDto> getSimpleUsers() {
-        return userService.findAllUsers()
+        return userProvider.findAllUsers()
                 .stream()
                 .map(userMapper::toSimpleDto)
                 .toList();
@@ -60,12 +61,12 @@ class UserController {
     @GetMapping("/email")
     public List<UserEmailDto> getUsersByEmail(@RequestParam(required = false) String email) {
         if (email != null && !email.isEmpty()) {
-            Optional<User> optionalUser = userService.getUserByEmail(email);
+            Optional<User> optionalUser = userProvider.getUserByEmail(email);
             return optionalUser
                     .map(user -> List.of(userMapper.toUserEmailDto(user)))
                     .orElseGet(List::of);
         }
-        return userService.findAllUsers()
+        return userProvider.findAllUsers()
                 .stream()
                 .map(userMapper::toUserEmailDto)
                 .toList();
@@ -80,7 +81,7 @@ class UserController {
     @GetMapping("/older/{time}")
     public List<UserDto> getUserByDate(@PathVariable String time) {
         LocalDate date = LocalDate.parse(time);
-        return userService.findAllUsers()
+        return userProvider.findAllUsers()
                 .stream()
                 .filter(user -> user.getBirthdate().isBefore(date))
                 .map(userMapper::toDto)
@@ -96,7 +97,7 @@ class UserController {
      */
     @GetMapping("/{id}")
     public UserDto getUser(@PathVariable Long id) {
-        return userService.getUser(id)
+        return userProvider.getUser(id)
                 .map(userMapper::toDto)
                 .orElseThrow(() -> new UserNotFoundException(id));
     }
@@ -110,7 +111,7 @@ class UserController {
      */
     @GetMapping("/simple/{id}")
     public SimpleUserDto getSimpleUser(@PathVariable Long id) {
-        return userService.getUser(id)
+        return userProvider.getUser(id)
                 .map(userMapper::toSimpleDto)
                 .orElseThrow(() -> new UserNotFoundException(id));
     }
@@ -125,7 +126,7 @@ class UserController {
      */
     @PutMapping("/{id}")
     public UserDto updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
-        if (userService.getUserByEmail(userDto.email()).isPresent()) {
+        if (userProvider.getUserByEmail(userDto.email()).isPresent()) {
             throw new DuplicateEmailException(userDto.email());
         }
         User updatedUser = userService.updateUser(id, userDto);
@@ -154,7 +155,7 @@ class UserController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto addUser(@RequestBody UserDto userDto) throws InterruptedException {
-        if (userService.getUserByEmail(userDto.email()).isPresent()) {
+        if (userProvider.getUserByEmail(userDto.email()).isPresent()) {
             throw new DuplicateEmailException(userDto.email());
         }
         User user = userMapper.toEntity(userDto);
