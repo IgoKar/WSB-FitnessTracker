@@ -19,7 +19,7 @@ public interface TrainingProvider {
      * @param trainingId ID of the training to retrieve.
      * @return An {@link Optional} containing the located training or {@link Optional#empty()} if not found.
      */
-    Optional<User> getTraining(Long trainingId);
+    Optional<Training> getTraining(Long trainingId);
 
     /**
      * Returns a list of all available trainings.
